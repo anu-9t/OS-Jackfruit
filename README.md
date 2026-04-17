@@ -2,6 +2,7 @@
 
 **Team Members:**
 * Anupam Tiwari (GitHub: anu-9t)
+* Bharath K (Github: Bharath172006)
 
 ## Build, Load, and Run Instructions
 
