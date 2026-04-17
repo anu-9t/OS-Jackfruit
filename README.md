@@ -24,54 +24,54 @@ To reproduce the project demonstration, open two terminal windows (one for the l
 Ensure a pristine environment by clearing any stale processes, kernel modules, log files, or mounts.
 
 **Terminal 2**
-`bash
+```bash
 sudo killall sleep cpu_hog io_pulse mem_hog 2>/dev/null
 sudo killall engine 2>/dev/null
 sudo rmmod monitor 2>/dev/null
 sudo umount ~/OS-Jackfruit/rootfs-*/proc 2>/dev/null
 sudo rm -rf ~/OS-Jackfruit/logs/*
-`
+```
 
 #### 1. Setup and Initialization
 Compile the user-space binaries, load the kernel monitor, and start the supervisor daemon.
 
 **Terminal 1 (Supervisor)**
-`bash
+```bash
 cd ~/OS-Jackfruit/boilerplate
 make
 cd ~/OS-Jackfruit
 sudo insmod boilerplate/monitor.ko
 sudo ./boilerplate/engine supervisor ./rootfs-base
-`
+```
 *(Leave Terminal 1 running in the background)*
 
 #### 2. Multi-Container Supervision
 Launch multiple isolated background containers and verify their tracking metadata.
 
 **Terminal 2 (Client)**
-`bash
+```bash
 cd ~/OS-Jackfruit
 sudo ./boilerplate/engine start alpha ./rootfs-alpha "sleep 100"
 sudo ./boilerplate/engine start beta ./rootfs-beta "sleep 100"
 sudo ./boilerplate/engine ps
-`
+```
 
 #### 3. Memory Enforcement
 Demonstrate the kernel monitor's ability to enforce soft and hard Resident Set Size (RSS) limits.
 
 **Terminal 2 (Client)**
-`bash
+```bash
 sudo ./boilerplate/engine stop alpha
 sudo ./boilerplate/engine start memtest ./rootfs-alpha "/mem_hog" --soft-mib 2 --hard-mib 10
 sleep 15
 sudo dmesg | tail -n 10
-`
+```
 
 #### 4. Scheduling & Bounded-Buffer Logging
 Run concurrent CPU and I/O workloads with adjusted priorities and verify the log-capture pipeline.
 
 **Terminal 2 (Client)**
-`bash
+```bash
 sudo ./boilerplate/engine stop memtest
 sudo ./boilerplate/engine stop beta
 sudo ./boilerplate/engine start hog ./rootfs-alpha "/cpu_hog" --nice 10
@@ -80,27 +80,27 @@ sleep 5
 sudo ./boilerplate/engine ps
 cat logs/hog.log
 cat logs/pulse.log
-`
+```
 
 #### 5. Clean Teardown
 Prove that all system resources, namespaces, and kernel allocations are cleanly released.
 
 **Terminal 2 (Client)**
-`bash
+```bash
 sudo ./boilerplate/engine stop hog
 sudo ./boilerplate/engine stop pulse
-`
+```
 
 **Terminal 1 (Supervisor)**
 Press `Ctrl+C` to gracefully shut down the supervisor daemon.
 
 **Terminal 2 (Client)**
-`bash
+```bash
 sudo rmmod monitor
 sudo dmesg | tail -n 5
 ps aux | grep engine
 sudo umount ~/OS-Jackfruit/rootfs-*/proc
-`
+```
 
 ## Demo Screenshots
 1. **Multi-container supervision:** [Completed] - Shows multiple `sleep` processes running under the supervisor.
