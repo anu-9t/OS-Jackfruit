@@ -1,8 +1,8 @@
 # OS-Jackfruit: Custom Linux Container Runtime
 
 **Team Members:**
-* Anupam Tiwari (GitHub: anu-9t)
-* Bharath K (GitHub: Bharath172006)
+* Anupam Tiwari (SRN: PES2UG24CS073 ; GitHub: anu-9t)
+* Bharath K (SRN: PES2UG24CS113 ; GitHub: Bharath172006)
 
 ## Build, Load, and Run Instructions
 
